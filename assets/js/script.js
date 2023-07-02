@@ -40,23 +40,7 @@ $(function () {
     });
   }
 
-  function saveEvent() {
-    var timeBlockId = $(this).parent().attr("id");
-    var description = $(this).siblings(".description").val();
-    savedEvents[timeBlockId] = description;
-    localStorage.setItem(timeBlockId, description);
-  }
 
-  function retrieveSavedEvents() {
-    $(".time-block").each(function() {
-      var timeBlockId = $(this).attr("id");
-      var description = localStorage.getItem(timeBlockId);
-      if (description) {
-        savedEvents[timeBlockId] = description;
-        $(this).find(".description").val(description);
-      }
-    });
-  }
 
   todayDate();
   lookTime();
