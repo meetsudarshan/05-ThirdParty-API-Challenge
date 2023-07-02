@@ -4,35 +4,35 @@
 $(function () {
   var savedEvents = {}; // Initialize savedEvents variable
 
-  function displayCurrentDate() {
+  function todayDate() {
     var today = dayjs();
-    var dayNumber = today.date();
-    var daySuffix;
+    var dayCount = today.date();
+    var dayExtn;
 
-    if (dayNumber >= 11 && dayNumber <= 13) {
-      daySuffix = "th";
-    } else if (dayNumber % 10 === 1) {
-      daySuffix = "st";
-    } else if (dayNumber % 10 === 2) {
-      daySuffix = "nd";
-    } else if (dayNumber % 10 === 3) {
-      daySuffix = "rd";
+    if (dayCount >= 11 && dayCount <= 13) {
+      dayExtn = "th";
+    } else if (dayCount % 10 === 1) {
+      dayExtn = "st";
+    } else if (dayCount % 10 === 2) {
+      dayExtn = "nd";
+    } else if (dayCount % 10 === 3) {
+      dayExtn = "rd";
     } else {
-      daySuffix = "th";
+      dayExtn = "th";
     }
 
-    var formattedDate = today.format("dddd, MMMM ") + dayNumber + daySuffix;
+    var formattedDate = today.format("dddd, MMMM ") + dayCount + dayExtn;
     $("#currentDay").text(formattedDate);
   }
 
-  function applyTimeBlockClasses() {
+  function lookTime() {
     var currentHour = dayjs().format("H");
     $(".time-block").each(function() {
-      var timeBlockHour = parseInt($(this).attr("id").split("-")[1]);
+      var currentTime = parseInt($(this).attr("id").split("-")[1]);
       $(this).removeClass("past present future");
-      if (timeBlockHour < currentHour) {
+      if (currentTime < currentHour) {
         $(this).addClass("past");
-      } else if (timeBlockHour == currentHour) {
+      } else if (currentTime == currentHour) {
         $(this).addClass("present");
       } else {
         $(this).addClass("future");
@@ -40,26 +40,10 @@ $(function () {
     });
   }
 
-  function saveEvent() {
-    var timeBlockId = $(this).parent().attr("id");
-    var description = $(this).siblings(".description").val();
-    savedEvents[timeBlockId] = description;
-    localStorage.setItem(timeBlockId, description);
-  }
 
-  function retrieveSavedEvents() {
-    $(".time-block").each(function() {
-      var timeBlockId = $(this).attr("id");
-      var description = localStorage.getItem(timeBlockId);
-      if (description) {
-        savedEvents[timeBlockId] = description;
-        $(this).find(".description").val(description);
-      }
-    });
-  }
 
-  displayCurrentDate();
-  applyTimeBlockClasses();
+  todayDate();
+  lookTime();
   retrieveSavedEvents();
 
   $(".saveBtn").on("click", saveEvent);
